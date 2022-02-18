@@ -43,6 +43,7 @@
     border-radius: 20px;
     outline: none;
     font-size: 1.5em;
+    font-weight: bold;
     font-family: "Roboto", sans-serif;
     background: white;
     color: black;
