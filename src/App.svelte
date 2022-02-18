@@ -2,6 +2,9 @@
   import AnswerBox from "./components/AnswerBox.svelte";
   import luminance from "./utils/getLuminance";
   import QuestionSVG from "./assets/question.svg";
+  import analytics from "mixpanel-browser";
+
+  analytics.init("ab04dfac9dd11b6ba0a66e668f9ded93");
 
   let showDrawer = false;
 
@@ -25,10 +28,16 @@
   let bGuess = 0;
 
   const submitAnswer = () => {
+    analytics.track("Answer Submitted", {
+      answer: `${rGuess}, ${gGuess}, ${bGuess}`,
+      correctAnswer: `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`,
+    });
+
     guesses.unshift([rGuess, gGuess, bGuess]);
     guesses = guesses;
 
     if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
+      analytics.track("Game Won");
       completed = true;
 
       rainbowInterval = setInterval(() => {
@@ -72,6 +81,8 @@
     if (e.key === "Enter") {
       e.preventDefault();
 
+      analytics.track("Enter Key Pressed");
+
       if (e.target === firstAnsbox) {
         secondAnsBox.focus();
       } else if (e.target === secondAnsBox) {
@@ -82,19 +93,34 @@
     }
   };
 
+  const toggleDrawer = () => {
+    showDrawer = !showDrawer;
+    if (showDrawer) {
+      analytics.track("Drawer Opened");
+    } else {
+      analytics.track("Drawer Closed");
+    }
+  };
+
+  const onRegenerateClick = () => {
+    analytics.track("Generate Clicked");
+    randomizeRgb();
+  };
+
   randomizeRgb();
 </script>
 
 <main>
-  <span class="question-button" on:click={() => (showDrawer = !showDrawer)}>
+  <span class="question-button" on:click={toggleDrawer}>
     <QuestionSVG width="2rem" height="2rem" />
   </span>
   <div class="drawer {showDrawer ? 'active' : ''}">
-    <span class="close-button" on:click={() => (showDrawer = false)}>X</span>
+    <span class="close-button" on:click={toggleDrawer}>X</span>
 
     <p>
       Hi, this is a variant of Wordle but for RGB values instead, pretty
       straightforward. Done by <a
+        on:click={() => analytics.track("Link to Homebase Clicked")}
         href="https://zexuan.xyz/projects/#rgbdle"
         target="blank_"
         noopenner
@@ -104,6 +130,7 @@
     <p>
       I saw this video
       <a
+        on:click={() => analytics.track("Link to YouTube vid Clicked")}
         href="https://www.youtube.com/shorts/W4Rebo3aEkY"
         target="_blank"
         noopener
@@ -151,7 +178,7 @@
       {:else}
         <p>Try to guess the RGB value of the color of the background!</p>
       {/if}
-      <button on:click={randomizeRgb}>Generate!</button>
+      <button on:click={onRegenerateClick}>regenerate!</button>
     </div>
     <div class="ansboxes-container-header" style="font-size: 5em;">
       <span>r</span>
@@ -221,7 +248,7 @@
 
   p {
     font-size: 1.2em;
-    text-shadow: 0.25em 0.25em 0.2em black;
+    text-shadow: 0.2em 0.2em 0.2em black;
   }
 
   .close-button {
