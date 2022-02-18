@@ -7,6 +7,7 @@
   let thirdAnsBox;
   let rainbowInterval;
   let rgb = [0, 0, 0];
+  let rainbowRgb = [0, 0, 0];
 
   /* guesses */
   let completed = false;
@@ -24,7 +25,7 @@
       completed = true;
 
       rainbowInterval = setInterval(() => {
-        rgb = [
+        rainbowRgb = [
           Math.floor(Math.random() * 256),
           Math.floor(Math.random() * 256),
           Math.floor(Math.random() * 256),
@@ -55,8 +56,8 @@
     rGuess = 0;
     gGuess = 0;
     bGuess = 0;
-
     completed = false;
+
     clearInterval(rainbowInterval);
   };
 
@@ -81,7 +82,11 @@
   <div
     class="container {completed ? 'slow-color-change' : ''}"
     style="
-	background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]});
+	background-color: rgb(
+		{completed ? rainbowRgb[0] : rgb[0]},
+		{completed ? rainbowRgb[1] : rgb[1]},
+		{completed ? rainbowRgb[2] : rgb[2]}
+	);
 	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};
 	"
   >

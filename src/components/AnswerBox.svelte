@@ -58,7 +58,7 @@
     bind:this={inputRef}
     style="background-color: {getBoxColor(value)};"
   />
-  {#if answer}
+  {#if answer && Math.abs(answer - value) !== 0}
     <DownArrowSvg
       width="1rem"
       height="1rem"
@@ -66,9 +66,7 @@
       position:absolute;
       margin-top: 0.4rem;
       margin-left: -1.5rem;
-      transform: rotate({answer && answer !== value && answer > value
-        ? '180deg'
-        : '0deg'});"
+      transform: rotate({answer > value ? '180deg' : '0deg'});"
     />
     {#if Math.abs(answer - value) > RED_THRESHOLD}
       <DownArrowSvg
@@ -78,9 +76,7 @@
       position:absolute;
       margin-top: 0.05rem;
       margin-left: -1.5rem;
-      transform: rotate({answer && answer !== value && answer > value
-          ? '180deg'
-          : '0deg'});"
+      transform: rotate({answer > value ? '180deg' : '0deg'});"
       />
     {/if}
   {/if}
