@@ -2,6 +2,8 @@
   import AnswerBox from "./components/AnswerBox.svelte";
   import luminance from "./utils/getLuminance";
 
+  let firstAnsbox; // ref to 1st input box
+
   let rgb = [100, 100, 120];
 
   const randomizeRgb = () => {
@@ -10,10 +12,38 @@
       Math.floor(Math.random() * 255),
       Math.floor(Math.random() * 255),
     ];
+
+    // reset guesses and inputs
+    guesses = [];
+    rGuess = 0;
+    gGuess = 0;
+    bGuess = 0;
   };
 
   /* guesses */
-  const guesses = [];
+  let guesses = [];
+
+  let rGuess = 0;
+  let gGuess = 0;
+  let bGuess = 0;
+
+  const submitAnswer = () => {
+    if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
+      alert("Yay!");
+      return;
+    }
+
+    guesses.unshift([rGuess, gGuess, bGuess]);
+    guesses = guesses;
+
+    // reset the guess
+    rGuess = 0;
+    gGuess = 0;
+    bGuess = 0;
+
+    // set cursor to 1st input
+    firstAnsbox.focus();
+  };
 </script>
 
 <main>
@@ -41,11 +71,34 @@
 		">(dle)</span
       >
     </div>
+
     <div class="ansboxes-container">
-      <AnswerBox />
-      <AnswerBox />
-      <AnswerBox />
+      <AnswerBox
+        bind:value={rGuess}
+        onSubmit={submitAnswer}
+        bind:inputRef={firstAnsbox}
+      />
+      <AnswerBox bind:value={gGuess} onSubmit={submitAnswer} />
+      <AnswerBox bind:value={bGuess} onSubmit={submitAnswer} />
+      <button
+        style="
+			position: absolute; 
+			margin-left: 20rem;
+			margin-top: 1em;
+		"
+        on:click={submitAnswer}
+      >
+        Submit
+      </button>
     </div>
+
+    {#each guesses as guess}
+      <div class="ansboxes-container">
+        <AnswerBox id="first-ansbox" disabled value={guess[0]} />
+        <AnswerBox disabled value={guess[1]} />
+        <AnswerBox disabled value={guess[2]} />
+      </div>
+    {/each}
   </div>
 </main>
 
@@ -72,6 +125,7 @@
     gap: 12px;
     flex-wrap: wrap;
     justify-content: center;
+    margin-bottom: 4px;
   }
   .ansboxes-container-header > span {
     width: 4.5rem;

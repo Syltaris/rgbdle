@@ -1,5 +1,10 @@
 <script>
+  export let id = undefined;
   export let value = 0;
+  export let disabled = false;
+  export let onSubmit = undefined;
+
+  export let inputRef = undefined;
 
   const validateAndUpdate = (e) => {
     var invalidChars = /[^0-9]/gi;
@@ -20,7 +25,14 @@
 </script>
 
 <main>
-  <input on:input={validateAndUpdate} bind:value />
+  <input
+    {id}
+    {disabled}
+    on:input={validateAndUpdate}
+    on:keypress={(e) => e.key === "Enter" && onSubmit?.()}
+    bind:value
+    bind:this={inputRef}
+  />
 </main>
 
 <style>
@@ -37,5 +49,20 @@
     text-align: center;
     padding: 0.5em;
     margin: 0;
+
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.3s;
+  }
+
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>
