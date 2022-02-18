@@ -318,6 +318,8 @@
     height: 100%;
     margin-bottom: 0px;
     padding-top: 50px;
+    padding-left: 40px;
+    padding-right: 40px;
 
     display: flex;
     flex-direction: column;
@@ -338,6 +340,8 @@
 
     display: none;
     width: 300px;
+
+    z-index: 100;
   }
   .drawer.active {
     display: inline;
