@@ -1,4 +1,6 @@
 <script>
+  import DownArrowSvg from "../assets/down-arrow.svg";
+
   export let id = undefined;
   export let value = 0;
   export let disabled = false;
@@ -6,6 +8,10 @@
   export let answer = undefined;
 
   export let inputRef = undefined;
+
+  const RED_THRESHOLD = 100;
+  const ORANGE_THRESHOLD = 20;
+  const YELLOW_THRESHOLD = 0;
 
   const validateAndUpdate = (e) => {
     var invalidChars = /[^0-9]/gi;
@@ -30,11 +36,11 @@
     }
 
     const difference = Math.abs(answer - value);
-    if (difference > 100) {
+    if (difference > RED_THRESHOLD) {
       return "#E71D36";
-    } else if (difference > 20) {
+    } else if (difference > ORANGE_THRESHOLD) {
       return "#F46036";
-    } else if (difference > 0) {
+    } else if (difference > YELLOW_THRESHOLD) {
       return "#FED766";
     } else {
       return "#2BC016";
@@ -52,6 +58,32 @@
     bind:this={inputRef}
     style="background-color: {getBoxColor(value)};"
   />
+  {#if answer}
+    <DownArrowSvg
+      width="1rem"
+      height="1rem"
+      style="
+      position:absolute;
+      margin-top: 0.4rem;
+      margin-left: -1.5rem;
+      transform: rotate({answer && answer !== value && answer > value
+        ? '180deg'
+        : '0deg'});"
+    />
+    {#if Math.abs(answer - value) > RED_THRESHOLD}
+      <DownArrowSvg
+        width="1rem"
+        height="1rem"
+        style="
+      position:absolute;
+      margin-top: 0.05rem;
+      margin-left: -1.5rem;
+      transform: rotate({answer && answer !== value && answer > value
+          ? '180deg'
+          : '0deg'});"
+      />
+    {/if}
+  {/if}
 </main>
 
 <style>
