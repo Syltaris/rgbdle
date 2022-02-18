@@ -3,12 +3,18 @@
   import luminance from "./utils/getLuminance";
   import QuestionSVG from "./assets/question.svg";
 
+  let showDrawer = false;
+
   let firstAnsbox; // ref to 1st input box
   let secondAnsBox;
   let thirdAnsBox;
   let rainbowInterval;
   let rgb = [0, 0, 0];
-  let rainbowRgb = [0, 0, 0];
+  let rainbowRgb = [
+    Math.floor(Math.random() * 256),
+    Math.floor(Math.random() * 256),
+    Math.floor(Math.random() * 256),
+  ];
 
   /* guesses */
   let completed = false;
@@ -80,9 +86,54 @@
 </script>
 
 <main>
-  <span class="question-button">
+  <span class="question-button" on:click={() => (showDrawer = !showDrawer)}>
     <QuestionSVG width="2rem" height="2rem" />
   </span>
+  <div class="drawer {showDrawer ? 'active' : ''}">
+    <span class="close-button" on:click={() => (showDrawer = false)}>X</span>
+
+    <p>
+      Hi, this is a variant of Wordle but for RGB values instead, pretty
+      straightforward. Done by <a
+        href="https://zexuan.xyz/projects/#rgbdle"
+        target="blank_"
+        noopenner
+        noreferrer>@zexurge</a
+      >.
+    </p>
+    <p>
+      I saw this video
+      <a
+        href="https://www.youtube.com/shorts/W4Rebo3aEkY"
+        target="_blank"
+        noopener
+        noreferrer>here</a
+      > of a guy describing his 'most useless skill' and he claims to be able to
+      guess any RGB value accurately after having worked with it so much, and I thought
+      it would be fun to make that into a game.
+    </p>
+
+    <p>
+      To play, just type in the RGB values you think represents the current
+      color of the background, each ranging 0-255, and then press enter to
+      submit (or hit the submit button).
+    </p>
+    <p>
+      If your guess is lower than the correct value, a 'down' chevron will show
+      along your guess, and if it's higher, a 'up' chevron will show.
+    </p>
+
+    <p>
+      The different colors also show how close you are to the correct answer.
+    </p>
+    <ul>Red: >100</ul>
+    <ul>Orange: 50-100</ul>
+    <ul>Yellow: 1-20</ul>
+    <ul>Green: Congrats!</ul>
+
+    <p>Thanks for checking this out, and have fun!</p>
+  </div>
+
   <div
     class="container {completed ? 'slow-color-change' : ''}"
     style="
@@ -173,6 +224,14 @@
     text-shadow: 0.25em 0.25em 0.2em black;
   }
 
+  .close-button {
+    position: absolute;
+    right: 0.2em;
+    top: 0.2em;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
   .question-button {
     margin-top: 1rem;
     margin-left: 1rem;
@@ -241,7 +300,30 @@
   }
 
   .slow-color-change {
-    transition: background-color 3s ease, color 3s ease;
+    transition: background-color 2s linear, color 2s ease;
+  }
+
+  .drawer {
+    position: absolute;
+    height: 100vh;
+    background-color: white;
+    padding: 30px 12px 12px 12px;
+
+    display: none;
+    width: 300px;
+  }
+  .drawer.active {
+    display: inline;
+
+    animation-name: slideIn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.3s;
+  }
+
+  .drawer > p {
+    font-size: 1rem;
+    text-shadow: none;
   }
 
   @media (min-width: 640px) {
@@ -256,6 +338,16 @@
     }
     100% {
       opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(0%);
     }
   }
 </style>
