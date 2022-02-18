@@ -5,6 +5,7 @@
   let firstAnsbox; // ref to 1st input box
   let secondAnsBox;
   let thirdAnsBox;
+  let rainbowInterval;
   let rgb = [0, 0, 0];
 
   /* guesses */
@@ -20,8 +21,16 @@
     guesses = guesses;
 
     if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
-      alert("Yay!");
       completed = true;
+
+      rainbowInterval = setInterval(() => {
+        rgb = [
+          Math.floor(Math.random() * 256),
+          Math.floor(Math.random() * 256),
+          Math.floor(Math.random() * 256),
+        ];
+      }, 2000);
+
       return;
     }
 
@@ -46,6 +55,9 @@
     rGuess = 0;
     gGuess = 0;
     bGuess = 0;
+
+    completed = false;
+    clearInterval(rainbowInterval);
   };
 
   const skipSubmitAndAutoTab = (e) => {
@@ -67,14 +79,18 @@
 
 <main>
   <div
-    class="container"
+    class="container {completed ? 'slow-color-change' : ''}"
     style="
 	background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]});
 	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};
 	"
   >
     <div>
-      <p>Try to guess the RGB value of the color of the background!</p>
+      {#if completed}
+        <p>Congratulations! You win!</p>
+      {:else}
+        <p>Try to guess the RGB value of the color of the background!</p>
+      {/if}
       <button on:click={randomizeRgb}>Generate!</button>
     </div>
     <div class="ansboxes-container-header" style="font-size: 5em;">
@@ -145,6 +161,7 @@
   }
 
   p {
+    font-size: 1.2em;
     text-shadow: 0.25em 0.25em 0.2em black;
   }
 
@@ -196,6 +213,10 @@
     align-items: center;
 
     transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  .slow-color-change {
+    transition: background-color 3s ease, color 3s ease;
   }
 
   @media (min-width: 640px) {
