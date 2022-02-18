@@ -1,6 +1,7 @@
 <script>
   import AnswerBox from "./components/AnswerBox.svelte";
   import luminance from "./utils/getLuminance";
+  import QuestionSVG from "./assets/question.svg";
 
   let firstAnsbox; // ref to 1st input box
   let secondAnsBox;
@@ -79,6 +80,9 @@
 </script>
 
 <main>
+  <span class="question-button">
+    <QuestionSVG width="2rem" height="2rem" />
+  </span>
   <div
     class="container {completed ? 'slow-color-change' : ''}"
     style="
@@ -158,7 +162,6 @@
 
 <style>
   main {
-    text-align: center;
     max-width: 240px;
     margin: 0 auto;
     min-height: 100vh;
@@ -168,6 +171,21 @@
   p {
     font-size: 1.2em;
     text-shadow: 0.25em 0.25em 0.2em black;
+  }
+
+  .question-button {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    position: absolute;
+    cursor: pointer;
+
+    height: 2rem;
+    width: 2rem;
+    background-color: white;
+    border-radius: 2rem;
+  }
+  .question-button:not(:disabled):active {
+    background-color: #aaa;
   }
 
   .guesses-container,
@@ -208,6 +226,8 @@
   }
 
   .container {
+    text-align: center;
+
     width: 100%;
     height: calc(100vh - 50px); /* why 50px? */
     margin-bottom: 0px;
