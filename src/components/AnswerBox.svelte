@@ -30,9 +30,9 @@
     }
 
     const difference = Math.abs(answer - value);
-    if (difference > 175) {
+    if (difference > 100) {
       return "#E71D36";
-    } else if (difference > 50) {
+    } else if (difference > 20) {
       return "#F46036";
     } else if (difference > 0) {
       return "#FED766";
@@ -47,7 +47,7 @@
     {id}
     {disabled}
     on:input={validateAndUpdate}
-    on:keypress={(e) => e.key === "Enter" && onSubmit?.()}
+    on:keypress={(e) => e.key === "Enter" && onSubmit?.(e)}
     bind:value
     bind:this={inputRef}
     style="background-color: {getBoxColor(value)};"

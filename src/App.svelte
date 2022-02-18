@@ -3,9 +3,37 @@
   import luminance from "./utils/getLuminance";
 
   let firstAnsbox; // ref to 1st input box
+  let secondAnsBox;
+  let thirdAnsBox;
+  let rgb = [0, 0, 0];
 
-  let rgb = [100, 100, 120];
+  /* guesses */
+  let completed = false;
+  let guesses = [];
 
+  let rGuess = 0;
+  let gGuess = 0;
+  let bGuess = 0;
+
+  const submitAnswer = () => {
+    guesses.unshift([rGuess, gGuess, bGuess]);
+    guesses = guesses;
+
+    if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
+      alert("Yay!");
+      completed = true;
+      return;
+    }
+
+    // reset the guess
+    rGuess = 0;
+    gGuess = 0;
+    bGuess = 0;
+    completed = false;
+
+    // set cursor to 1st input
+    firstAnsbox.focus();
+  };
   const randomizeRgb = () => {
     rgb = [
       Math.floor(Math.random() * 255),
@@ -20,30 +48,21 @@
     bGuess = 0;
   };
 
-  /* guesses */
-  let guesses = [];
+  const skipSubmitAndAutoTab = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
 
-  let rGuess = 0;
-  let gGuess = 0;
-  let bGuess = 0;
-
-  const submitAnswer = () => {
-    if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
-      alert("Yay!");
-      return;
+      if (e.target === firstAnsbox) {
+        secondAnsBox.focus();
+      } else if (e.target === secondAnsBox) {
+        thirdAnsBox.focus();
+      } else if (e.target === thirdAnsBox) {
+        submitAnswer();
+      }
     }
-
-    guesses.unshift([rGuess, gGuess, bGuess]);
-    guesses = guesses;
-
-    // reset the guess
-    rGuess = 0;
-    gGuess = 0;
-    bGuess = 0;
-
-    // set cursor to 1st input
-    firstAnsbox.focus();
   };
+
+  randomizeRgb();
 </script>
 
 <main>
@@ -74,20 +93,24 @@
 
     <div class="ansboxes-container">
       <AnswerBox
+        disabled={completed}
         bind:value={rGuess}
-        onSubmit={submitAnswer}
+        onSubmit={skipSubmitAndAutoTab}
         bind:inputRef={firstAnsbox}
       />
-      <AnswerBox bind:value={gGuess} onSubmit={submitAnswer} />
-      <AnswerBox bind:value={bGuess} onSubmit={submitAnswer} />
-      <button
-        style="
-			position: absolute; 
-			margin-left: 22rem;
-			margin-top: 1em;
-		"
-        on:click={submitAnswer}
-      >
+      <AnswerBox
+        disabled={completed}
+        bind:value={gGuess}
+        onSubmit={skipSubmitAndAutoTab}
+        bind:inputRef={secondAnsBox}
+      />
+      <AnswerBox
+        disabled={completed}
+        bind:value={bGuess}
+        onSubmit={submitAnswer}
+        bind:inputRef={thirdAnsBox}
+      />
+      <button disabled={completed} class="right-offset" on:click={submitAnswer}>
         Submit
       </button>
     </div>
@@ -102,6 +125,11 @@
         />
         <AnswerBox disabled answer={rgb[1]} value={guess[1]} />
         <AnswerBox disabled answer={rgb[2]} value={guess[2]} />
+
+        <div
+          class="anspreview-box right-offset"
+          style="background-color: rgb({guess[0]},{guess[1]},{guess[2]})"
+        />
       </div>
     {/each}
   </div>
@@ -141,6 +169,22 @@
     animation-duration: 0.3s;
   }
 
+  .right-offset {
+    position: absolute;
+    margin-left: 22rem;
+    margin-top: 0.6em;
+  }
+
+  .anspreview-box {
+    width: 2rem;
+    height: 2rem;
+    border: 5px solid black;
+    border-radius: 4rem;
+    outline: none;
+
+    text-align: center;
+  }
+
   .container {
     width: 100%;
     height: calc(100vh - 50px); /* why 50px? */
@@ -151,8 +195,7 @@
     flex-direction: column;
     align-items: center;
 
-    transition: background-color 0.5s ease;
-    transition: color 0.5s ease;
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
 
   @media (min-width: 640px) {
