@@ -50,8 +50,16 @@ input:disabled {
 
 button {
   color: #333;
-  background-color: #f4f4f4;
+  background-color: #eeeeee;
   outline: none;
+
+  border: 5px solid black;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: lowercase;
+  padding: 0.5em 0.8em;
 }
 
 button:disabled {

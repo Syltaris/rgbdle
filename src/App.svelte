@@ -83,7 +83,7 @@
       <button
         style="
 			position: absolute; 
-			margin-left: 20rem;
+			margin-left: 22rem;
 			margin-top: 1em;
 		"
         on:click={submitAnswer}
@@ -93,7 +93,7 @@
     </div>
 
     {#each guesses as guess}
-      <div class="ansboxes-container">
+      <div class="guesses-container">
         <AnswerBox id="first-ansbox" disabled value={guess[0]} />
         <AnswerBox disabled value={guess[1]} />
         <AnswerBox disabled value={guess[2]} />
@@ -116,9 +116,7 @@
     font-weight: 400;
   }
 
-  p {
-  }
-
+  .guesses-container,
   .ansboxes-container,
   .ansboxes-container-header {
     display: flex;
@@ -130,6 +128,13 @@
   .ansboxes-container-header > span {
     width: 4.5rem;
     margin-bottom: 4px;
+  }
+  .guesses-container {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.3s;
   }
 
   .container {
@@ -149,6 +154,15 @@
   @media (min-width: 640px) {
     main {
       max-width: none;
+    }
+  }
+
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
 </style>
