@@ -1,5 +1,6 @@
 <script>
-  export let name;
+  import AnswerBox from "./components/AnswerBox.svelte";
+  import luminance from "./utils/getLuminance";
 
   let rgb = [100, 100, 120];
 
@@ -11,31 +12,40 @@
     ];
   };
 
-  /* sRGB lumniance calculation */
-  const luminance = (r, g, b) => {
-    r /= 255;
-    g /= 255;
-    b /= 255;
-
-    return (
-      0.2126 * Math.pow(r, 2.2) +
-      0.7152 * Math.pow(g, 2.2) +
-      0.0722 * Math.pow(b, 2.2)
-    );
-  };
+  /* guesses */
+  const guesses = [];
 </script>
 
 <main>
   <div
     class="container"
-    style="background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]});"
+    style="
+	background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]});
+	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};
+	"
   >
-    <h1>rgbdle ({luminance(...rgb)})</h1>
-    <p style="color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};">
-      Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-      how to build Svelte apps.
-    </p>
-    <button on:click={randomizeRgb}>Generate!</button>
+    <div>
+      <p>Try to guess the RGB value of the color of the background!</p>
+      <button on:click={randomizeRgb}>Generate!</button>
+    </div>
+    <div class="ansboxes-container-header" style="font-size: 5em;">
+      <span>r</span>
+      <span>g</span>
+      <span>b</span>
+      <span
+        style="
+	  	position: absolute; 
+		margin-left: 8.5em;
+		margin-top: 1em;
+		font-size: .5em;
+		">(dle)</span
+      >
+    </div>
+    <div class="ansboxes-container">
+      <AnswerBox />
+      <AnswerBox />
+      <AnswerBox />
+    </div>
   </div>
 </main>
 
@@ -49,14 +59,23 @@
   }
 
   h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
     font-size: 4em;
-    font-weight: 100;
+    font-weight: 400;
   }
 
   p {
-    transition: color 0.5s ease;
+  }
+
+  .ansboxes-container,
+  .ansboxes-container-header {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ansboxes-container-header > span {
+    width: 4.5rem;
+    margin-bottom: 4px;
   }
 
   .container {
@@ -68,9 +87,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     transition: background-color 0.5s ease;
+    transition: color 0.5s ease;
   }
 
   @media (min-width: 640px) {
