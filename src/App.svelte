@@ -4,7 +4,7 @@
   import QuestionSVG from "./assets/question.svg";
   import analytics from "mixpanel-browser";
 
-  analytics.init("ab04dfac9dd11b6ba0a66e668f9ded93");
+  analytics.init("ab04dfac9dd11b6ba0a66e668f9ded93", { debug: true });
 
   let showDrawer = false;
 
@@ -240,9 +240,9 @@
 
 <style>
   main {
-    max-width: 240px;
+    max-width: none;
     margin: 0 auto;
-    min-height: 100vh;
+    height: 100vh;
     max-height: 100vh;
   }
 
@@ -315,7 +315,7 @@
     text-align: center;
 
     width: 100%;
-    height: calc(100vh - 50px); /* why 50px? */
+    height: 100%;
     margin-bottom: 0px;
     padding-top: 50px;
 
@@ -353,9 +353,24 @@
     text-shadow: none;
   }
 
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
+  @media (max-width: 400px) {
+    .container {
+      height: 100vh;
+      padding-right: 80px;
+
+      font-size: 0.8em;
+    }
+
+    .guesses-container,
+    .ansboxes-container,
+    .ansboxes-container-header {
+      gap: 2px;
+    }
+  }
+
+  @media (max-width: 270px) {
+    .container {
+      font-size: 0.6em;
     }
   }
 
