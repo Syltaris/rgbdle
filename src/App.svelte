@@ -110,10 +110,25 @@
   randomizeRgb();
 </script>
 
-<main>
-  <span class="question-button" on:click={toggleDrawer}>
-    <QuestionSVG width="2rem" height="2rem" />
-  </span>
+<main style="	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};">
+  <div style="background: none;">
+    <span class="question-button" on:click={toggleDrawer}>
+      <QuestionSVG width="2rem" height="2rem" />
+    </span>
+    <button class="regenerate-button" on:click={onRegenerateClick}
+      >regenerate!</button
+    >
+    <div class="top-text">
+      {#if completed}
+        <p>
+          Congratulations! You win with {guesses.length}
+          {guesses.length === 1 ? "guess" : "guesses"}!
+        </p>
+      {:else}
+        <p>Try to guess the RGB value of the background!</p>
+      {/if}
+    </div>
+  </div>
   <div class="drawer {showDrawer ? 'active' : ''}">
     <span class="close-button" on:click={toggleDrawer}>X</span>
 
@@ -172,14 +187,6 @@
 	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};
 	"
   >
-    <div>
-      {#if completed}
-        <p>Congratulations! You win!</p>
-      {:else}
-        <p>Try to guess the RGB value of the color of the background!</p>
-      {/if}
-      <button on:click={onRegenerateClick}>regenerate!</button>
-    </div>
     <div class="ansboxes-container-header" style="font-size: 5em;">
       <span>r</span>
       <span>g</span>
@@ -242,8 +249,11 @@
   main {
     max-width: none;
     margin: 0 auto;
-    height: 100vh;
-    max-height: 100vh;
+    min-height: 100vh;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
   }
 
   p {
@@ -272,6 +282,19 @@
   }
   .question-button:not(:disabled):active {
     background-color: #aaa;
+  }
+  .regenerate-button {
+    margin-top: 1rem;
+    margin-left: 4rem;
+    position: absolute;
+    cursor: pointer;
+
+    font-size: 0.7rem;
+  }
+  .top-text {
+    margin-top: 0rem;
+    margin-left: 10rem;
+    position: absolute;
   }
 
   .guesses-container,
@@ -314,14 +337,13 @@
   .container {
     text-align: center;
 
-    width: 100%;
-    height: 100%;
     margin-bottom: 0px;
     padding-top: 50px;
     padding-left: 40px;
     padding-right: 40px;
 
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
 
@@ -333,7 +355,7 @@
   }
 
   .drawer {
-    position: absolute;
+    position: fixed;
     height: 100vh;
     background-color: white;
     padding: 30px 12px 12px 12px;
@@ -342,6 +364,7 @@
     width: 300px;
 
     z-index: 100;
+    color: black;
   }
   .drawer.active {
     display: inline;
@@ -362,13 +385,26 @@
       height: 100vh;
       padding-right: 80px;
 
-      font-size: 0.8em;
+      font-size: 0.8rem;
     }
 
     .guesses-container,
     .ansboxes-container,
     .ansboxes-container-header {
       gap: 2px;
+    }
+
+    .ansboxes-container-header > span {
+      width: 3rem;
+    }
+
+    .right-offset {
+      margin-left: 18rem;
+    }
+
+    .top-text {
+      margin-top: 0.6rem;
+      font-size: 0.6rem;
     }
   }
 

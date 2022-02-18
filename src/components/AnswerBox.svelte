@@ -98,4 +98,10 @@
     padding: 0.5em;
     margin: 0;
   }
+
+  @media (max-width: 400px) {
+    input {
+      width: 3.6rem;
+    }
+  }
 </style>
