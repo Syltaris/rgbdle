@@ -10,6 +10,19 @@
       Math.floor(Math.random() * 255),
     ];
   };
+
+  /* sRGB lumniance calculation */
+  const luminance = (r, g, b) => {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    return (
+      0.2126 * Math.pow(r, 2.2) +
+      0.7152 * Math.pow(g, 2.2) +
+      0.0722 * Math.pow(b, 2.2)
+    );
+  };
 </script>
 
 <main>
@@ -17,8 +30,8 @@
     class="container"
     style="background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]});"
   >
-    <h1>rgbdle</h1>
-    <p>
+    <h1>rgbdle ({luminance(...rgb)})</h1>
+    <p style="color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};">
       Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
       how to build Svelte apps.
     </p>
@@ -43,6 +56,7 @@
   }
 
   p {
+    transition: color 0.5s ease;
   }
 
   .container {
@@ -55,6 +69,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    transition: background-color 0.5s ease;
   }
 
   @media (min-width: 640px) {
