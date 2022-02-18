@@ -94,9 +94,14 @@
 
     {#each guesses as guess}
       <div class="guesses-container">
-        <AnswerBox id="first-ansbox" disabled value={guess[0]} />
-        <AnswerBox disabled value={guess[1]} />
-        <AnswerBox disabled value={guess[2]} />
+        <AnswerBox
+          id="first-ansbox"
+          disabled
+          answer={rgb[0]}
+          value={guess[0]}
+        />
+        <AnswerBox disabled answer={rgb[1]} value={guess[1]} />
+        <AnswerBox disabled answer={rgb[2]} value={guess[2]} />
       </div>
     {/each}
   </div>
@@ -111,9 +116,8 @@
     max-height: 100vh;
   }
 
-  h1 {
-    font-size: 4em;
-    font-weight: 400;
+  p {
+    text-shadow: 0.25em 0.25em 0.2em black;
   }
 
   .guesses-container,
