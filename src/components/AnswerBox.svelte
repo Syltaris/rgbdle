@@ -99,9 +99,12 @@
     margin: 0;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 440px) {
     input {
       width: 3.6rem;
+      padding-top: 0.6rem;
+
+      font-size: 1.2em;
     }
   }
 </style>
