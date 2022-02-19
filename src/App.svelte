@@ -46,7 +46,7 @@
           Math.floor(Math.random() * 256),
           Math.floor(Math.random() * 256),
         ];
-      }, 2000);
+      }, 1000);
 
       return;
     }
@@ -352,7 +352,7 @@
   }
 
   .slow-color-change {
-    transition: background-color 2s linear, color 2s ease;
+    transition: background-color 1s linear, color 1s ease;
   }
 
   .drawer {
