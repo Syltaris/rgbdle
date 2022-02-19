@@ -9,8 +9,14 @@
   const localStorage = window.localStorage;
 
   let showDrawer = false;
+
+  // saved states
   let shouldSwingQuestionButton =
     localStorage.getItem("helpDrawerOpenedBefore") === null;
+  let wonGames =
+    localStorage.getItem("wonGames") === null
+      ? []
+      : JSON.parse(localStorage.getItem("wonGames"));
 
   let firstAnsbox; // ref to 1st input box
   let secondAnsBox;
@@ -43,6 +49,11 @@
     if (rGuess == rgb[0] && gGuess == rgb[1] && bGuess == rgb[2]) {
       analytics.track("Game Won");
       completed = true;
+
+      // save answers
+      wonGames.push(guesses);
+      wonGames = wonGames;
+      localStorage.setItem("wonGames", JSON.stringify(wonGames));
 
       rainbowInterval = setInterval(() => {
         rainbowRgb = [
@@ -187,6 +198,11 @@
     <ul>Green: Congrats!</ul>
 
     <p>Thanks for checking this out, and have fun!</p>
+
+    <p>
+      Games Won: {wonGames.length}
+      Total Guesses: {wonGames.reduce((acc, cur) => acc + cur.length, 0)}
+    </p>
   </div>
 
   <div
