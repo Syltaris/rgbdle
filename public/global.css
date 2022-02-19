@@ -74,3 +74,9 @@ button:not(:disabled):active {
 button:focus {
   border-color: #666;
 }
+
+@media (max-width: 300px) {
+  body {
+    height: 200%; /* hack to make body flow over bottom */
+  }
+}

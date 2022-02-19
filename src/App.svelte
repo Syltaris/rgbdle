@@ -292,7 +292,7 @@
 
   .close-button {
     position: absolute;
-    right: 0.2em;
+    right: 1em;
     top: 0.2em;
     font-size: 1.5em;
     cursor: pointer;
@@ -437,6 +437,11 @@
     }
     .ansboxes-container > button {
       font-size: 0.6rem;
+    }
+
+    .anspreview-box {
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
     .top-text {
