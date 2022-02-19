@@ -185,8 +185,9 @@
       submit (or hit the submit button).
     </p>
     <p>
-      If your guess is lower than the correct value, a 'down' chevron will show
-      along your guess, and if it's higher, a 'up' chevron will show.
+      If your guess is lower than the correct value, an 'up' chevron will show
+      along your guess, and if it's higher, a 'down' chevron will show. The arrow
+      basically points towards the answer.
     </p>
 
     <p>
