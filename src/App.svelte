@@ -6,7 +6,11 @@
 
   analytics.init("ab04dfac9dd11b6ba0a66e668f9ded93", { debug: true });
 
+  const localStorage = window.localStorage;
+
   let showDrawer = false;
+  let shouldSwingQuestionButton =
+    localStorage.getItem("helpDrawerOpenedBefore") === null;
 
   let firstAnsbox; // ref to 1st input box
   let secondAnsBox;
@@ -97,6 +101,11 @@
     showDrawer = !showDrawer;
     if (showDrawer) {
       analytics.track("Drawer Opened");
+
+      if (localStorage.getItem("helpDrawerOpenedBefore") === null) {
+        shouldSwingQuestionButton = false;
+        localStorage.setItem("helpDrawerOpenedBefore", true);
+      }
     } else {
       analytics.track("Drawer Closed");
     }
@@ -112,7 +121,11 @@
 
 <main style="	color:{luminance(...rgb) > 0.2 ? 'black' : 'white'};">
   <div style="background: none;">
-    <span class="question-button" on:click={toggleDrawer}>
+    <span
+      class="question-button"
+      style={shouldSwingQuestionButton ? "" : "animation-iteration-count: 0;"}
+      on:click={toggleDrawer}
+    >
       <QuestionSVG width="2rem" height="2rem" />
     </span>
     <button class="regenerate-button" on:click={onRegenerateClick}
@@ -279,6 +292,11 @@
     width: 2rem;
     background-color: white;
     border-radius: 2rem;
+
+    animation-name: pendulum;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 4s;
   }
   .question-button:not(:disabled):active {
     background-color: #aaa;
@@ -437,6 +455,18 @@
 
     100% {
       transform: translateX(0%);
+    }
+  }
+
+  @keyframes pendulum {
+    0% {
+      transform: rotate(40deg);
+    }
+    50% {
+      transform: rotate(-40deg);
+    }
+    100% {
+      transform: rotate(40deg);
     }
   }
 </style>
