@@ -125,7 +125,7 @@
           {guesses.length === 1 ? "guess" : "guesses"}!
         </p>
       {:else}
-        <p>Try to guess the RGB value of the background!</p>
+        <p />
       {/if}
     </div>
   </div>
@@ -192,11 +192,11 @@
       <span>g</span>
       <span>b</span>
       <span
+        class="right-offset"
         style="
-	  	position: absolute; 
-		margin-left: 8.5em;
 		margin-top: 1em;
 		font-size: .5em;
+    margin-right: .5em
 		">(dle)</span
       >
     </div>
@@ -294,6 +294,7 @@
   .top-text {
     margin-top: 0rem;
     margin-left: 10rem;
+    margin-right: 1rem;
     position: absolute;
   }
 
@@ -342,8 +343,8 @@
     padding-left: 40px;
     padding-right: 40px;
 
-    display: flex;
     flex: 1;
+    display: flex;
     flex-direction: column;
     align-items: center;
 
@@ -380,11 +381,10 @@
     text-shadow: none;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 440px) {
     .container {
-      height: 100vh;
       padding-right: 80px;
-
+      flex: 1;
       font-size: 0.8rem;
     }
 
@@ -401,6 +401,9 @@
     .right-offset {
       margin-left: 18rem;
     }
+    .ansboxes-container > button {
+      font-size: 0.6rem;
+    }
 
     .top-text {
       margin-top: 0.6rem;
@@ -408,9 +411,13 @@
     }
   }
 
-  @media (max-width: 270px) {
-    .container {
-      font-size: 0.6em;
+  @media (max-width: 330px) {
+    .right-offset {
+      margin-left: 15rem;
+    }
+
+    .top-text {
+      font-size: 0.5;
     }
   }
 
